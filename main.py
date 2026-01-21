@@ -1,4 +1,5 @@
 # Mood-based Song Suggester
+import random
 
 AVALIABLE_MOODS = ["Happy", "Sad", "Love", "Relaxed", "Angry"]
 
@@ -45,3 +46,29 @@ SONG_LIST = [
     {"title": "'You Oughta Know' by Alanis Morissette", "mood": "Angry"},
 ]
 
+def format_song(song):
+    return song['title']
+
+def song_suggestion():
+    mood_song_list = []
+
+    user_mood = input(f"What mood are you in? {AVALIABLE_MOODS}").strip().capitalize()
+
+    if not user_mood:
+        print("No mood was inputted. We aren't mind readers try again.")
+        return
+    
+    try:
+        if user_mood in AVALIABLE_MOODS:
+            for song in SONG_LIST:
+                if song["mood"] == user_mood:
+                    print_ready_song = format_song(song)
+                    mood_song_list.append(print_ready_song)
+    except:
+        print(f"Mood not found in database. Please choose a mood we provide {AVALIABLE_MOODS}")
+
+    suggestions = random.sample(mood_song_list, k=min(3, len(mood_song_list)))
+    print(suggestions)
+    
+
+song_suggestion()
