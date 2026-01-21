@@ -1,7 +1,7 @@
 # Mood-based Song Suggester
 import random
 
-AVALIABLE_MOODS = ["Happy", "Sad", "Love", "Relaxed", "Angry"]
+AVAILABLE_MOODS = ["Happy", "Sad", "Love", "Relaxed", "Angry"]
 
 SONG_LIST = [
     {"title": "'Happy' by Pharrell Williams", "mood": "Happy"},
@@ -54,7 +54,7 @@ def format_song(song):
 def song_suggestion():
     mood_song_list = []
 
-    print(AVALIABLE_MOODS)
+    print(AVAILABLE_MOODS)
     user_mood = input(f"What mood are you in? ").strip().capitalize()
     
     user_song_amount = 3
@@ -75,35 +75,41 @@ def song_suggestion():
 
     if not user_mood:
         print("No mood was inputted. We aren't mind readers try again.")
+        return
     
     
-    if user_mood in AVALIABLE_MOODS:
+    if user_mood in AVAILABLE_MOODS:
         for song in SONG_LIST:
             if song["mood"] == user_mood:
                 print_ready_song = format_song(song)
                 mood_song_list.append(print_ready_song)
     else:
-        print(f"Mood not found in database. Please choose a mood we provide {AVALIABLE_MOODS}")
+        print(f"Mood not found in database. Please choose a mood we provide {AVAILABLE_MOODS}")
 
     suggestions = random.sample(mood_song_list, k=min(song_amount, len(mood_song_list)))
 
     if not suggestions:
         print("No songs available.")
     else:
-        print(suggestions)
+        print(f"\nHere are your {song_amount} suggestions:")
+        for i, song in enumerate(suggestions, 1):
+            print(f"{i}. {song}")
 
-    continued = input("Would you like more suggestions for this mood? (yes/no): ").strip().lower()
-    if continued.startswith("n"):
-        return
-    else:
-        for song in suggestions:
-            mood_song_list.remove(song)
+    while True:
+        continued = input("Would you like more suggestions for this mood? (yes/no): ").strip().lower()
+        if continued.startswith("n"):
+            return
+        elif continued.startswith("y"):
+            for song in suggestions:
+                mood_song_list.remove(song)
 
-        if len(mood_song_list) < song_amount:
-            print(f"Only {len(mood_song_list)} songs left for this mood")
+            if len(mood_song_list) < song_amount:
+                print(f"Only {len(mood_song_list)} songs left for this mood")
 
-        suggestions = random.sample(mood_song_list, k=min(song_amount, len(mood_song_list)))
-        print(suggestions)
+            suggestions = random.sample(mood_song_list, k=min(song_amount, len(mood_song_list)))
+            print(suggestions)
+        else:
+            print("Please enter 'yes' or 'no'")
     
 
 
