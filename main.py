@@ -73,5 +73,30 @@ def song_suggestion():
         print("No songs available.")
     else:
         print(suggestions)
+
+    continued = input("Would you like more suggestions for this mood? (yes/no): ").strip().lower()
+    if continued.startswith("n"):
+        return
+    else:
+        for song in suggestions:
+            mood_song_list.remove(song)
+
+        if len(mood_song_list) < 3:
+            print(f"Only {len(mood_song_list)} songs left for this mood")
+
+        suggestions = random.sample(mood_song_list, k=min(3, len(mood_song_list)))
+        print(suggestions)
     
 
+
+print("Welcome to the Mood-Based Song Suggester")
+print("Type 'song suggestions' to get your recommended songs \nOr type 'exit' to leave the app \n")
+while option := input("What would you like to do? "):
+    match option:
+        case 'song suggestions':
+            song_suggestion()
+        case 'more':
+            pass
+        case 'exit':
+            print("See you next time!")
+            break
