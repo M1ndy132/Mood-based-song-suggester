@@ -52,23 +52,26 @@ def format_song(song):
 def song_suggestion():
     mood_song_list = []
 
-    user_mood = input(f"What mood are you in? {AVALIABLE_MOODS}").strip().capitalize()
+    print(AVALIABLE_MOODS)
+    user_mood = input(f"What mood are you in? ").strip().capitalize()
 
     if not user_mood:
         print("No mood was inputted. We aren't mind readers try again.")
-        return
     
-    try:
-        if user_mood in AVALIABLE_MOODS:
-            for song in SONG_LIST:
-                if song["mood"] == user_mood:
-                    print_ready_song = format_song(song)
-                    mood_song_list.append(print_ready_song)
-    except:
+    
+    if user_mood in AVALIABLE_MOODS:
+        for song in SONG_LIST:
+            if song["mood"] == user_mood:
+                print_ready_song = format_song(song)
+                mood_song_list.append(print_ready_song)
+    else:
         print(f"Mood not found in database. Please choose a mood we provide {AVALIABLE_MOODS}")
 
     suggestions = random.sample(mood_song_list, k=min(3, len(mood_song_list)))
-    print(suggestions)
+
+    if not suggestions:
+        print("No songs available.")
+    else:
+        print(suggestions)
     
 
-song_suggestion()
