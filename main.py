@@ -46,6 +46,8 @@ SONG_LIST = [
     {"title": "'You Oughta Know' by Alanis Morissette", "mood": "Angry"},
 ]
 
+song_amount = 3
+
 def format_song(song):
     return song['title']
 
@@ -54,6 +56,22 @@ def song_suggestion():
 
     print(AVALIABLE_MOODS)
     user_mood = input(f"What mood are you in? ").strip().capitalize()
+    
+    user_song_amount = 3
+    user_input = input("How many songs would you like? (3 - 10)/ default = 3: ").strip()
+    
+    if user_input:  # Only try to convert if input is not empty
+        try:
+            user_song_amount = int(user_input)
+        except ValueError:
+            print("Not a valid integer. Using default of 3")
+    # If empty, user_song_amount stays at default 3
+
+    if user_song_amount not in range(3, 11):
+        print("User input outside of range. Using default of 3.")
+        user_song_amount = 3
+
+    song_amount = user_song_amount
 
     if not user_mood:
         print("No mood was inputted. We aren't mind readers try again.")
@@ -67,7 +85,7 @@ def song_suggestion():
     else:
         print(f"Mood not found in database. Please choose a mood we provide {AVALIABLE_MOODS}")
 
-    suggestions = random.sample(mood_song_list, k=min(3, len(mood_song_list)))
+    suggestions = random.sample(mood_song_list, k=min(song_amount, len(mood_song_list)))
 
     if not suggestions:
         print("No songs available.")
@@ -81,10 +99,10 @@ def song_suggestion():
         for song in suggestions:
             mood_song_list.remove(song)
 
-        if len(mood_song_list) < 3:
+        if len(mood_song_list) < song_amount:
             print(f"Only {len(mood_song_list)} songs left for this mood")
 
-        suggestions = random.sample(mood_song_list, k=min(3, len(mood_song_list)))
+        suggestions = random.sample(mood_song_list, k=min(song_amount, len(mood_song_list)))
         print(suggestions)
     
 
